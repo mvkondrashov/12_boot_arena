@@ -14,6 +14,7 @@ class Person:
         self.health_points = health_points
         self.base_attack = base_attack
         self.base_defence = base_defence
+        self.inventory = []
 
 
 class Paladin(Person):
