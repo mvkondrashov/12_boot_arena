@@ -4,7 +4,7 @@ class Thing:
         self.name = name
         self.defence = defence
         self.attack = attack
-        self.healt_points = health_points
+        self.health_points = health_points
 
 
 class Person:
