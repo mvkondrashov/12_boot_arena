@@ -1,6 +1,7 @@
 import random
 
 from arena_classes import Thing, Person, Paladin, Warrior
+from arena_things import create_thing
 
 NAMES = [
     "Oliver", "Charlotte", "Liam", "Amelia", "Noah", "Isla", "James", "Ava",
@@ -10,8 +11,14 @@ NAMES = [
 PEOPLE = []
 
 
-def create_things():
-    pass
+def reduction_of_lives(defending_person, attacking_person):
+    all_item_defence = 0
+    for item in defending_person.inventory:
+        all_item_defence += item.defence
+    attack_damage = attacking_person.base_attack * (
+                defending_person.base_defence + all_item_defence)
+    defending_person.health_points -= attack_damage
+    return attack_damage
 
 
 def create_person():
@@ -31,11 +38,27 @@ def dress_person():
     for person in PEOPLE:
         count = random.randint(1, 4)
         for index in range(count):
-            person.inventory.append(create_things())
+            person.inventory.append(create_thing())
 
 
 def do_battle():
-    print('Я за мир. Боёв не будет.')
+    while True:
+        defending_person = random.choice(PEOPLE)
+        attacking_person = random.choice(
+            [item for item in PEOPLE if item != defending_person]
+        )
+
+        print(f"{'_' * 10} ~~~ {'_' * 10}")
+        print(f'Начала поединка между {attacking_person.name} и {defending_person.name}!')
+        while True:
+            damage = reduction_of_lives(defending_person, attacking_person)
+            print(f'{attacking_person.name} наносит удар по {defending_person.name} на {damage} ур')
+            if defending_person.health_points <= 0:
+                PEOPLE.remove(defending_person)
+                print(f'{attacking_person.name} одержал победу!')
+                break
+
+
 
 
 def main():
